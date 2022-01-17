@@ -1,16 +1,10 @@
 package main
 
-import (
-	"context"
-	"my-lambda/printer"
+import "github.com/aws/aws-lambda-go/lambda"
 
-	"github.com/aws/aws-lambda-go/lambda"
-)
-
-func HandleRequest(ctx context.Context, event map[string]interface{}) {
-	printer.Print()
+func handleRequest() (string, error) {
+	return "Hello from Go!", nil
 }
-
 func main() {
-	lambda.Start(HandleRequest)
+	lambda.Start(handleRequest)
 }

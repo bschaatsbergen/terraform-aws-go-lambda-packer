@@ -26,12 +26,13 @@ function build_executable() {
     go mod tidy;
   fi
 
-  GOOS=linux go build .
+  GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build .
 }
 
 function pack_executable() {
   cd - # go back to previous directory
-  zip -r ${OUTPUT_PATH} ${SOURCE_PATH}
+  echo pwd
+  zip -r ${OUTPUT_PATH} ${SOURCE_PATH} --junk-paths
 }
 
 # function build_stable_hash() {
@@ -42,6 +43,6 @@ check_deps
 parse_input
 build_executable
 pack_executable
-build_stable_hash
+#build_stable_hash
 
 # echo '{"source_path": "my-lambda", "output_path": "my-lambda/my-lambda.zip", "install_dependencies": true}' | ./go_lambda_packer.sh

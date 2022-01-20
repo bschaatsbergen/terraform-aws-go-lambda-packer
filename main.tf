@@ -1,5 +1,5 @@
 data "external" "go_lambda_packer" {
-  program = ["bash", "${path.root}/scripts/go_lambda_packer.sh"]
+  program = ["bash", "${path.module}/scripts/go_lambda_packer.sh"]
 
   query = {
     source_path          = var.source_path

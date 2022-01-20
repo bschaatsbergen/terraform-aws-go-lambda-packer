@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# echo '{"source_path": "example/my-lambda", "output_path": "example/my-lambda/my-lambda.zip", "install_dependencies": true}' | scripts//go_lambda_packer.sh
+
 function error_exit() {
   echo "$1" 1>&2
   exit 1
@@ -37,18 +39,18 @@ function pack_executable() {
 function build_stable_base64_hash() {
   executable=$(find . -executable -type f) # find executable files in current directory
 
-  sha256_hash=$(sha256sum ${executable} | awk '{print $1}')
-  # echo "DEBUG: sha256_hash ${sha256_hash}" 1>&2
+  sha256=$(sha256sum ${executable} | awk '{print $1}')
+  # echo "DEBUG: sha256 ${sha256}" 1>&2
 
-  stable_base64_hash=$(echo ${sha256_hash} | base64)
-  # echo "DEBUG: stable_base64_hash ${stable_base64_hash}" 1>&2
+  base64sha256=$(echo ${sha256} | base64)
+  # echo "DEBUG: base64sha256 ${base64sha256}" 1>&2
 }
 
 function produce_output() {
   jq -n \
-    --arg stable_base64_hash "$stable_base64_hash" \
+    --arg source_code_hash "$base64sha256" \
     --arg output_path "$output_path" \
-    '{"source_code_hash":$stable_base64_hash,"output_path":$output_path}'
+    '{"source_code_hash":$source_code_hash,"output_path":$output_path}'
 }
 
 check_deps
@@ -57,5 +59,3 @@ build_executable
 build_stable_base64_hash
 pack_executable
 produce_output
-
-# echo '{"source_path": "example/my-lambda", "output_path": "example/my-lambda/my-lambda.zip", "install_dependencies": true}' | scripts//go_lambda_packer.sh

@@ -21,7 +21,7 @@ function parse_input() {
 }
 
 function build_executable() {
-  cd ${source_path}
+  cd ${source_path} || exit
 
   if $install_dependencies; then 
     go mod verify
@@ -32,21 +32,23 @@ function build_executable() {
 }
 
 function pack_executable() {
-  cd - # go back to previous directory
+  cd - || exit # go back to previous directory
   zip -r ${output_path} ${source_path} --junk-paths
 }
 
 function build_stable_base64_hash() {
   executable=$(find . -executable -type f) # find executable files in current directory
 
-  sha256=$(sha256sum ${executable} | awk '{print $1}')
+  sha256=$(sha256sum "${executable}" | awk '{print $1}')
   # echo "DEBUG: sha256 ${sha256}" 1>&2
 
-  base64sha256=$(echo ${sha256} | base64)
+  base64sha256=$(echo "${sha256}" | base64)
   # echo "DEBUG: base64sha256 ${base64sha256}" 1>&2
 }
 
 function produce_output() {
+  # echo "DEBUG: source_code_hash ${base64sha256}" 1>&2
+  # echo "DEBUG: output_path ${output_path}" 1>&2
   jq -n \
     --arg source_code_hash "$base64sha256" \
     --arg output_path "$output_path" \

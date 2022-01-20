@@ -33,5 +33,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_output_path"></a> [output\_path](#output\_output\_path) | Zip file path. |
+| <a name="output_output_path"></a> [output\_path](#output\_output\_path) | Path of the zip file that contains the Go binanry. |
+| <a name="output_source_code_hash"></a> [source\_code\_hash](#output\_source\_code\_hash) | Base64 encoded sha256 sum of the Go binary. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -12,16 +12,16 @@ function check_deps() {
 }
 
 function parse_input() {
-  eval "$(jq -r '@sh "export SOURCE_PATH=\(.source_path) OUTPUT_PATH=\(.output_path) INSTALL_DEPENDENCIES=\(.install_dependencies)"')"
-  if [[ -z "${SOURCE_PATH}" ]]; then export SOURCE_PATH=none; fi
-  if [[ -z "${OUTPUT_PATH}" ]]; then export OUTPUT_PATH=none; fi
-  if [[ -z "${INSTALL_DEPENDENCIES}" ]]; then export INSTALL_DEPENDENCIES=none; fi
+  eval "$(jq -r '@sh "export source_path=\(.source_path) output_path=\(.output_path) install_dependencies=\(.install_dependencies)"')"
+  if [[ -z "${source_path}" ]]; then export source_path=none; fi
+  if [[ -z "${output_path}" ]]; then export output_path=none; fi
+  if [[ -z "${install_dependencies}" ]]; then export install_dependencies=none; fi
 }
 
 function build_executable() {
-  cd ${SOURCE_PATH}
+  cd ${source_path}
 
-  if $INSTALL_DEPENDENCIES; then 
+  if $install_dependencies; then 
     go mod verify
     go mod tidy;
   fi
@@ -31,18 +31,31 @@ function build_executable() {
 
 function pack_executable() {
   cd - # go back to previous directory
-  echo pwd
-  zip -r ${OUTPUT_PATH} ${SOURCE_PATH} --junk-paths
+  zip -r ${output_path} ${source_path} --junk-paths
 }
 
-# function build_stable_hash() {
-#   sha256sum ${OUTPUT_PATH} | awk '{print $1}'
-# }
+function build_stable_base64_hash() {
+  executable=$(find . -executable -type f) # find executable files in current directory
+
+  sha256_hash=$(sha256sum ${executable} | awk '{print $1}')
+  # echo "DEBUG: sha256_hash ${sha256_hash}" 1>&2
+
+  stable_base64_hash=$(echo ${sha256_hash} | base64)
+  # echo "DEBUG: stable_base64_hash ${stable_base64_hash}" 1>&2
+}
+
+function produce_output() {
+  jq -n \
+    --arg stable_base64_hash "$stable_base64_hash" \
+    --arg output_path "$output_path" \
+    '{"source_code_hash":$stable_base64_hash,"output_path":$output_path}'
+}
 
 check_deps
 parse_input
 build_executable
+build_stable_base64_hash
 pack_executable
-#build_stable_hash
+produce_output
 
-# echo '{"source_path": "my-lambda", "output_path": "my-lambda/my-lambda.zip", "install_dependencies": true}' | ./go_lambda_packer.sh
+# echo '{"source_path": "example/my-lambda", "output_path": "example/my-lambda/my-lambda.zip", "install_dependencies": true}' | scripts//go_lambda_packer.sh

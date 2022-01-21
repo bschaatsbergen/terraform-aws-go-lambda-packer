@@ -29,26 +29,20 @@ function build_executable() {
   fi
 
   GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build .
-} &> /dev/null
 
-function pack_executable() {
-  cd - || exit # go back to previous directory
-  zip -r ${output_path} ${source_path} --junk-paths
+  cd - # go back to previous directory
 } &> /dev/null
 
 function build_stable_base64_hash() {
-  executable=$(find . -executable -type f) # find executable files in current directory
+  base64sha256=$(openssl dgst -sha256 -binary ${output_path} | openssl enc -base64)
+} &> /dev/null
 
-  sha256=$(sha256sum "${executable}" | awk '{print $1}')
-  # echo "DEBUG: sha256 ${sha256}" 1>&2
 
-  base64sha256=$(echo "${sha256}" | base64)
-  # echo "DEBUG: base64sha256 ${base64sha256}" 1>&2
+function pack_executable() {
+  zip -r -X ${output_path} ${source_path} --junk-paths
 } &> /dev/null
 
 function produce_output() {
-  # echo "DEBUG: source_code_hash ${base64sha256}" 1>&2
-  # echo "DEBUG: output_path ${output_path}" 1>&2
   jq -n \
     --arg source_code_hash "$base64sha256" \
     --arg output_path "$output_path" \
@@ -58,6 +52,6 @@ function produce_output() {
 check_deps
 parse_input
 build_executable
-build_stable_base64_hash
 pack_executable
+build_stable_base64_hash
 produce_output

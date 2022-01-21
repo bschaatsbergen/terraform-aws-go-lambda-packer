@@ -18,7 +18,7 @@ function parse_input() {
   if [[ -z "${source_path}" ]]; then export source_path=none; fi
   if [[ -z "${output_path}" ]]; then export output_path=none; fi
   if [[ -z "${install_dependencies}" ]]; then export install_dependencies=none; fi
-}
+} &> /dev/null
 
 function build_executable() {
   cd ${source_path} || exit
@@ -29,12 +29,12 @@ function build_executable() {
   fi
 
   GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build .
-}
+} &> /dev/null
 
 function pack_executable() {
   cd - || exit # go back to previous directory
   zip -r ${output_path} ${source_path} --junk-paths
-}
+} &> /dev/null
 
 function build_stable_base64_hash() {
   executable=$(find . -executable -type f) # find executable files in current directory
@@ -44,7 +44,7 @@ function build_stable_base64_hash() {
 
   base64sha256=$(echo "${sha256}" | base64)
   # echo "DEBUG: base64sha256 ${base64sha256}" 1>&2
-}
+} &> /dev/null
 
 function produce_output() {
   # echo "DEBUG: source_code_hash ${base64sha256}" 1>&2

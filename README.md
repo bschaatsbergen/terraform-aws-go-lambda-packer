@@ -1,9 +1,9 @@
 # Terraform AWS Go Lambda Packer
 
-Package python source and dependencies into Lambda package with stable hash.
+Deploy Go based Lambda functions without the need of packaging it yourself.
 See: https://docs.aws.amazon.com/lambda/latest/dg/golang-package.html
 
-This terraform module allows you to package and deploy a Go based AWS Lambda function.
+This terraform module allows you to package and deploy a Go based AWS Lambda function including a stable SHA256 source hash.
 
 Features:
 

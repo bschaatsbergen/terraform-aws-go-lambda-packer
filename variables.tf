@@ -9,7 +9,7 @@ variable "output_path" {
 }
 
 variable "install_dependencies" {
-  description = "Whether to install module dependencies."
+  description = "Install module dependencies."
   type        = bool
   default     = true
 }

@@ -60,11 +60,7 @@ resource "aws_lambda_function" "my_lambda" {
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-The following binaries are required:
-
-- jq
-- go
-- zip
+No requirements.
 
 ## Providers
 
@@ -86,7 +82,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_install_dependencies"></a> [install\_dependencies](#input\_install\_dependencies) | Whether to install module dependencies. | `bool` | `true` | no |
+| <a name="input_install_dependencies"></a> [install\_dependencies](#input\_install\_dependencies) | Install module dependencies. | `bool` | `true` | no |
 | <a name="input_output_path"></a> [output\_path](#input\_output\_path) | Path for output file. | `string` | n/a | yes |
 | <a name="input_source_path"></a> [source\_path](#input\_source\_path) | Path to root of Go source. | `string` | n/a | yes |
 
@@ -97,3 +93,9 @@ No modules.
 | <a name="output_output_path"></a> [output\_path](#output\_output\_path) | Path of the zip file that contains the Go binanry. |
 | <a name="output_source_code_hash"></a> [source\_code\_hash](#output\_source\_code\_hash) | Base64 encoded sha256 sum of the Go binary. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## External dependencies
+
+- jq
+- go
+- zip

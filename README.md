@@ -10,11 +10,13 @@ Features:
 - Compresses binary into a zip
 - Uses a stable base64 sha256 hash to check if your Lambda function has changes. (*under development*)
 
+> Note: This module is not live yet, the last feature is being worked on.
+
 ## Example
 
 ```hcl
 module "go_lambda_packer" {
-  source      = "../"
+  source      = "bschaatsbergen/terraform-aws-go-lambda-packer"
   source_path = "${path.module}/my-lambda"
   output_path = "${path.module}/my-lambda/my-lambda.zip"
 }

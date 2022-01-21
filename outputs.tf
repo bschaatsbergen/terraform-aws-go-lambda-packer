@@ -1,5 +1,5 @@
 output "source_code_hash" {
-  description = "Base64 encoded sha256 sum of the Go binary."
+  description = "Base64 encoded sha256 sum of the zip file."
   value       = data.external.go_lambda_packer.result.source_code_hash
 }
 

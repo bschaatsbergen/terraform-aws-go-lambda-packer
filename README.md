@@ -1,6 +1,6 @@
 # Terraform AWS Go Lambda Packer
 
-This terraform module allows you to package and deploy a Go based AWS Lambda function including a stable SHA256 source hash.
+This terraform module allows you to package and deploy a Go based AWS Lambda function.
 
 See: https://docs.aws.amazon.com/lambda/latest/dg/golang-package.html
 
@@ -8,7 +8,7 @@ Features:
 
 - Install dependencies
 - Compresses binary into a zip
-- Builds a stable base64 SHA256 sum (*under development*)
+- Uses a stable base64 sha256 hash to check if your Lambda function has changes. (*under development*)
 
 ## Example
 

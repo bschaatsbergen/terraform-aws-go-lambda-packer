@@ -4,6 +4,6 @@ output "source_code_hash" {
 }
 
 output "output_path" {
-  description = "Path of the zip file that contains the Go binanry."
+  description = "Path of the zip file that contains the Go binary."
   value       = data.external.go_lambda_packer.result.output_path
 }

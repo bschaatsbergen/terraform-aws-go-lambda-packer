@@ -23,7 +23,7 @@ function parse_input() {
 function build_executable() {
   cd ${source_path} || exit
 
-  if $install_dependencies; then 
+  if $install_dependencies; then
     go mod verify
     go mod tidy;
   fi
@@ -33,25 +33,7 @@ function build_executable() {
   cd - # go back to previous directory
 } &> /dev/null
 
-function build_stable_base64_hash() {
-  base64sha256=$(openssl dgst -sha256 -binary ${output_path} | openssl enc -base64)
-} &> /dev/null
-
-
-function pack_executable() {
-  zip -r -X ${output_path} ${source_path} --junk-paths
-} &> /dev/null
-
-function produce_output() {
-  jq -n \
-    --arg source_code_hash "$base64sha256" \
-    --arg output_path "$output_path" \
-    '{"source_code_hash":$source_code_hash,"output_path":$output_path}'
-}
-
 check_deps
 parse_input
 build_executable
-pack_executable
-build_stable_base64_hash
-produce_output
+echo "{}"

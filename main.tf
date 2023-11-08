@@ -11,7 +11,7 @@ data "external" "go_lambda_packer" {
 data "archive_file" "zip" {
   type        = "zip"
   source_dir = "${var.source_path}/"
-  output_path = "${path.module}/event-parser.zip"
+  output_path = var.output_path
 
   depends_on = [data.external.go_lambda_packer]
 }
